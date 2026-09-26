@@ -44,3 +44,20 @@ exports.deleteTransaction = async (req, res) => {
 		res.status(500).json({ message: err.message });
 	}
 };
+exports.getMonthlySummary = async (req, res) => {
+  try {
+    const transactions = await Transaction.find({ user: req.userId });
+
+    const summary = {};
+    transactions.forEach((t) => {
+      const month = new Date(t.date).toISOString().slice(0, 7); // "2026-09"
+      if (!summary[month]) summary[month] = { month, income: 0, expense: 0 };
+      summary[month][t.type] += t.amount;
+    });
+
+    const result = Object.values(summary).sort((a, b) => a.month.localeCompare(b.month));
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

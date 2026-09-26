@@ -8,8 +8,10 @@ const {
 router.use(protect); // every route below requires login
 
 router.get('/', getTransactions);
+router.get('/reports/summary', require('../controllers/transactionController').getMonthlySummary);
 router.post('/', createTransaction);
 router.put('/:id', updateTransaction);
 router.delete('/:id', deleteTransaction);
+
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -16,6 +16,9 @@ function Navbar() {
         <h1 className="text-xl font-bold text-white">💰 ExpenseTracker</h1>
         {user && (
           <div className="flex items-center gap-4">
+            <Link to="/reports" className="text-sm text-blue-200 hover:text-white transition hidden sm:block">
+              Reports
+            </Link>
             <span className="text-sm text-blue-200 hidden sm:block">Hi, {user.name}</span>
             <button
               onClick={handleLogout}
