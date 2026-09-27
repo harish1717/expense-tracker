@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Health', 'Salary', 'Other'];
-
+export const CATEGORIES = ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Health', 'Salary', 'Other'];
 function TransactionForm({ onSubmit, onClose, initialData }) {
   const [form, setForm] = useState({
     type: 'expense',

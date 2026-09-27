@@ -1,12 +1,12 @@
 const Budget = require('../models/Budget');
 const Transaction = require('../models/Transaction');
 
-// Get budget + current spending for a given month
+// Get all budgets + spending for a given month, one entry per category
 exports.getBudgetStatus = async (req, res) => {
   try {
-    const { month } = req.params; // e.g. "2026-09"
+    const { month } = req.params;
 
-    const budget = await Budget.findOne({ user: req.userId, month });
+    const budgets = await Budget.find({ user: req.userId, month });
 
     const start = new Date(`${month}-01T00:00:00.000Z`);
     const end = new Date(start);
@@ -18,29 +18,45 @@ exports.getBudgetStatus = async (req, res) => {
       date: { $gte: start, $lt: end },
     });
 
-    const spent = transactions.reduce((sum, t) => sum + t.amount, 0);
-
-    res.json({
-      month,
-      limit: budget?.limit || null,
-      spent,
-      percentUsed: budget?.limit ? Math.round((spent / budget.limit) * 100) : null,
+    const result = budgets.map((b) => {
+      const spent = transactions
+        .filter((t) => t.category === b.category)
+        .reduce((sum, t) => sum + t.amount, 0);
+      return {
+        _id: b._id,
+        category: b.category,
+        limit: b.limit,
+        spent,
+        percentUsed: Math.round((spent / b.limit) * 100),
+      };
     });
+
+    res.json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// Set or update the budget for a month
+// Set or update a budget for a specific category + month
 exports.setBudget = async (req, res) => {
   try {
-    const { month, limit } = req.body;
+    const { month, category, limit } = req.body;
     const budget = await Budget.findOneAndUpdate(
-      { user: req.userId, month },
+      { user: req.userId, month, category },
       { limit },
       { new: true, upsert: true }
     );
     res.json(budget);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Delete a category budget
+exports.deleteBudget = async (req, res) => {
+  try {
+    await Budget.findOneAndDelete({ _id: req.params.id, user: req.userId });
+    res.json({ message: 'Deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
