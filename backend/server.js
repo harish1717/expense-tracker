@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-  origin: 'https://expense-tracker-hairsh.vercel.app',
+  origin: 'https://expense-tracker-nine-tau-30.vercel.app',
   credentials: true,
 }));
 app.use(express.json());
