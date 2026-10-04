@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  categories: {
+    type: [String],
+    default: ['Food', 'Transport', 'Shopping', 'Bills', 'Entertainment', 'Health', 'Salary', 'Other'],
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

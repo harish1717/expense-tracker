@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
+import AllTransactions from './pages/AllTransactions';
 import Categories from './pages/Categories';
 import Dashboard from './pages/Dashboard';
 
@@ -18,6 +19,14 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            <Route
+  path="/transactions"
+  element={
+    <PrivateRoute>
+      <AllTransactions />
+    </PrivateRoute>
+  }
+/>
             <Route
   path="/categories"
   element={
