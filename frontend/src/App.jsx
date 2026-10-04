@@ -6,6 +6,8 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import AllTransactions from './pages/AllTransactions';
 import Categories from './pages/Categories';
+import Budgets from './pages/Budgets';
+import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 
 function PrivateRoute({ children }) {
@@ -20,21 +22,37 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route
-  path="/transactions"
-  element={
-    <PrivateRoute>
-      <AllTransactions />
-    </PrivateRoute>
-  }
-/>
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
             <Route
-  path="/categories"
-  element={
-    <PrivateRoute>
-      <Categories />
-    </PrivateRoute>
-  }
-/>
+              path="/budgets"
+              element={
+                <PrivateRoute>
+                  <Budgets />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/transactions"
+              element={
+                <PrivateRoute>
+                  <AllTransactions />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/categories"
+              element={
+                <PrivateRoute>
+                  <Categories />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/reports"
               element={
