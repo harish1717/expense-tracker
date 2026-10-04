@@ -1,18 +1,24 @@
+import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import ConfirmModal from './ConfirmModal';
 
 function Sidebar() {
   const { user, logout } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-const handleLogout = () => {
-  if (!confirm('Are you sure you want to logout?')) return;
-  logout();
-  navigate('/login');
-};
+  const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const navItems = [
     { to: '/dashboard', label: 'Dashboard', icon: '📊' },
@@ -87,6 +93,15 @@ const handleLogout = () => {
           </button>
         </div>
       </div>
+
+      {showLogoutConfirm && (
+        <ConfirmModal
+          title="Logout"
+          message="Are you sure you want to logout?"
+          onConfirm={confirmLogout}
+          onCancel={() => setShowLogoutConfirm(false)}
+        />
+      )}
     </>
   );
 }
