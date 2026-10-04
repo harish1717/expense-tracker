@@ -8,10 +8,11 @@ function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+const handleLogout = () => {
+  if (!confirm('Are you sure you want to logout?')) return;
+  logout();
+  navigate('/login');
+};
 
   const navItems = [
     { to: '/dashboard', label: 'Dashboard', icon: '📊' },
