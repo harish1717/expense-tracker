@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import api from '../api/axios';
 import Sidebar from '../components/Sidebar';
+import ConfirmModal from '../components/ConfirmModal';
+import { useState as useStateAlias } from 'react';
 import TransactionForm from '../components/TransactionForm';
 import BudgetAlert from '../components/BudgetAlert';
 import { CATEGORIES } from '../components/TransactionForm';
@@ -13,6 +15,7 @@ function Dashboard() {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [deleteId, setDeleteId] = useState(null);
 
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -38,11 +41,15 @@ function Dashboard() {
     fetchTransactions();
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm('Delete this transaction?')) return;
-    await api.delete(`/transactions/${id}`);
-    fetchTransactions();
-  };
+  const handleDelete = (id) => {
+  setDeleteId(id);
+};
+
+const confirmDelete = async () => {
+  await api.delete(`/transactions/${deleteId}`);
+  setDeleteId(null);
+  fetchTransactions();
+};
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter((t) => {
@@ -184,11 +191,19 @@ function Dashboard() {
         </div>
       </div>
 
-      {showForm && (
+          {showForm && (
         <TransactionForm
           initialData={editing}
           onSubmit={handleAddOrEdit}
           onClose={() => { setShowForm(false); setEditing(null); }}
+        />
+      )}
+      {deleteId && (
+        <ConfirmModal
+          title="Delete Transaction"
+          message="Are you sure you want to delete this transaction? This cannot be undone."
+          onConfirm={confirmDelete}
+          onCancel={() => setDeleteId(null)}
         />
       )}
     </div>
