@@ -96,11 +96,12 @@ function Sidebar() {
 
       {showLogoutConfirm && (
         <ConfirmModal
-          title="Logout"
-          message="Are you sure you want to logout?"
-          onConfirm={confirmLogout}
-          onCancel={() => setShowLogoutConfirm(false)}
-        />
+  title="Logout"
+  message="Are you sure you want to logout?"
+  confirmLabel="Yes, Logout"
+  onConfirm={confirmLogout}
+  onCancel={() => setShowLogoutConfirm(false)}
+/>
       )}
     </>
   );

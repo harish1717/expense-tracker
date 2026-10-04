@@ -1,4 +1,4 @@
-function ConfirmModal({ title, message, onConfirm, onCancel }) {
+function ConfirmModal({ title, message, confirmLabel = 'Confirm', onConfirm, onCancel }) {
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center px-4 z-50">
       <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
@@ -14,8 +14,8 @@ function ConfirmModal({ title, message, onConfirm, onCancel }) {
           <button
             onClick={onConfirm}
             className="flex-1 py-2.5 rounded-lg text-sm font-semibold bg-amber-500 hover:bg-amber-600 text-black transition"
-          >
-            Yes, Logout
+                   >
+            {confirmLabel}
           </button>
         </div>
       </div>

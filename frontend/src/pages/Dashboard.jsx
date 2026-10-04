@@ -200,11 +200,12 @@ const confirmDelete = async () => {
       )}
       {deleteId && (
         <ConfirmModal
-          title="Delete Transaction"
-          message="Are you sure you want to delete this transaction? This cannot be undone."
-          onConfirm={confirmDelete}
-          onCancel={() => setDeleteId(null)}
-        />
+  title="Delete Transaction"
+  message="Are you sure you want to delete this transaction? This cannot be undone."
+  confirmLabel="Yes, Delete"
+  onConfirm={confirmDelete}
+  onCancel={() => setDeleteId(null)}
+/>
       )}
     </div>
   );
